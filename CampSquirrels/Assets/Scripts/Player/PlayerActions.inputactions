@@ -92,6 +92,34 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Interact",
+            "id": "5bd3f2fc-a398-4e65-be43-ff5064cb34d9",
+            "actions": [
+                {
+                    "name": "PickUpItem",
+                    "type": "Button",
+                    "id": "79e7d8ec-d08b-49ca-aa7b-62dd0f43131a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "68c26f4a-d885-4bd1-aa29-d2c2d610fd02",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PickUpItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
