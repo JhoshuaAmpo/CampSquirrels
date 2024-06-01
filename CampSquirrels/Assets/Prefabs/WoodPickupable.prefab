@@ -48,6 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemType: 0
+  meshes:
+  - {fileID: -1032068245253102720, guid: 6b4e345569431b443981139ef6eee7cb, type: 3}
+  - {fileID: 850851749126972732, guid: de4f7fd599336354cba273f0921f85db, type: 3}
 --- !u!65 &7147748785246607100
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -67,7 +70,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 2, y: 1, z: 1}
   m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!54 &1639845077192230568
 Rigidbody:
@@ -106,15 +109,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6b4e345569431b443981139ef6eee7cb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.063568
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b4e345569431b443981139ef6eee7cb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b4e345569431b443981139ef6eee7cb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.611142
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b4e345569431b443981139ef6eee7cb, type: 3}
       propertyPath: m_LocalRotation.w

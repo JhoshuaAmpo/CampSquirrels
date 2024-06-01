@@ -17,24 +17,43 @@ public class CampfireController : MonoBehaviour
     [Tooltip("Total time before the fire goes out in seconds")]
     public float Lifespan {get; private set;}
     bool isExtinguished = false;
-
-    // Timer for burning of 1 fuel
+    // Timer for burning 1 fuel
     private float burnTimer;
-
+    private ParticleSystem fireParticles;
     enum Type {}
+    GameObject player;
+    PlayerHealth playerHealth;
 
     // Func increaseRemainingFuel
     // Func decrease 
     private void Awake() {
         burnTimer = fuelDuration;
         Lifespan = remainingFuel * fuelDuration;
+        fireParticles = GetComponentInChildren<ParticleSystem>();
+        player = GameObject.FindWithTag("Player");
+        playerHealth = player.GetComponent<PlayerHealth>();
     }
 
     private void Update() {
         UpdateBurnTimer();
     }
 
+    private void OnTriggerEnter(Collider other) {
+        // Debug.Log(other.name + " has entered the campfire");
+        if (other.CompareTag("Player")) {
+            playerHealth.IsInCampFireRange(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other) {
+        // Debug.Log(other.name + " has left the campfire");
+        if (other.CompareTag("Player")) {
+            playerHealth.IsInCampFireRange(false);
+        }
+    }
+
     public void IncreaseRemainingFuel(int numOfFuel) {
+        if (isExtinguished) { return; }
         remainingFuel += numOfFuel;
         Lifespan += numOfFuel * fuelDuration;
     }
@@ -55,6 +74,7 @@ public class CampfireController : MonoBehaviour
     private void ExtinguishFlame() {
         isExtinguished = true;
         fire.SetActive(false);
+        fireParticles.gameObject.SetActive(false);
         // Debug.Log("Fire has gone out!");
     }
 }
