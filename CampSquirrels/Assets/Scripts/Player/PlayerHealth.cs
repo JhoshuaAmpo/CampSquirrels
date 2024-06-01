@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +13,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     [Tooltip("Health gain per second insdie the fire")]
     private float warmthRegen;
-
-    private float currentHP;
-
     public bool InCampfireRange { get; set; } = true;
+    private float currentHP;
+    public event Action<float, float> OnHealthChange;
 
     private void Awake() {
         currentHP = maxHP;
@@ -33,6 +33,7 @@ public class PlayerHealth : MonoBehaviour
     public void ChangeCurrentHP(float delta){
         currentHP += delta;
         Mathf.Clamp(currentHP, 0, maxHP);
+        OnHealthChange?.Invoke(currentHP, maxHP);
         if (currentHP < 0){
             ProcessDeath();
         }
