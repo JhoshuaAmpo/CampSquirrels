@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerObjectInteractions : MonoBehaviour
 {
-    public int FuelOnHand {get; private set;} = 0;
+    public event Action<int> OnChangeOfFuelCount;
+    public int FuelCount {get; private set;} = 0;
     PlayerActions playerActions;
     private void Awake() {
         playerActions = new();
@@ -55,14 +56,16 @@ public class PlayerObjectInteractions : MonoBehaviour
     }
 
     private void PickUpWood(Collider other) {
-        FuelOnHand++;
+        FuelCount++;
         other.gameObject.SetActive(false);
-        Debug.Log("Picked up wood");
+        OnChangeOfFuelCount.Invoke(FuelCount);
+        // Debug.Log("Picked up wood");
     }
     private void DepositWood(CampfireController cfc) {
-        if (FuelOnHand <= 0) { return; }
+        if (FuelCount <= 0) { return; }
         cfc.IncreaseRemainingFuel(1);
-        FuelOnHand--;
-        Debug.Log("Depositied wood");
+        FuelCount--;
+        OnChangeOfFuelCount.Invoke(FuelCount);
+        // Debug.Log("Depositied wood");
     }
 }
