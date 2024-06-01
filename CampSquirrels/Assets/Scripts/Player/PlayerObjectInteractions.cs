@@ -16,7 +16,7 @@ public class PlayerObjectInteractions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         // DisplayInteraction(); 
-        // Debug.Log(other.name + "has entered my box");
+        Debug.Log(other.name + "has entered my box");
         ProcessInteraction(other);
     }
 
