@@ -88,7 +88,6 @@ public class ObjectPooler : MonoBehaviour
 
     // Spawns object at pos, returns the index of the spawned object
     private int Spawn(Vector3 pos) {
-        Debug.Log("Spawn object at:" + pos);
         int i = 0;
         while(objectPool[i].activeSelf) {
             i++;
@@ -97,14 +96,13 @@ public class ObjectPooler : MonoBehaviour
         objectPool[i].transform.position = pos;
         objectPool[i].SetActive(true);
         spawnTimer = spawnRate;
+        // Debug.Log("Spawn " + objectPool[i] + " at " + pos);
         return i;
     }
 
     private void UpdateSpotTaken() {
         for( int i = 0; i < spawnPointsTaken.Count; i++) {
-            // Debug.Log("Obj " + i + ": " + spawnPointsTaken[i].Item1);
             if (spawnPointsTaken[i].Item1 && !spawnPointsTaken[i].Item1.activeSelf) {
-                Debug.Log("Change status of index: " + i);
                 spawnPointsTaken[i] = new(null, false);
             }
         }
