@@ -93,9 +93,9 @@ ModelImporter:
     - serializedVersion: 16
       name: Run Cycle
       takeName: Take 001
-      internalID: -8481709605947105597
+      internalID: -3291206362154003629
       firstFrame: 5
-      lastFrame: 23
+      lastFrame: 22
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
