@@ -7,17 +7,17 @@ using UnityEngine.AI;
 public class SquirrelBehavior : MonoBehaviour
 {
     [SerializeField]
-    [Min(0f)]
-    private float attackDelay;
-    [SerializeField]
     private Transform targetTransform;
+    [Header("Leap values")]
     [SerializeField]
     [Tooltip("X = X & Z, Y = Y")]
     private Vector2 leapForce = Vector2.one;
     [SerializeField]
-    private float moveSpeed;
-    [SerializeField]
     private float gravityValue = 9.81f;
+    [Header("Attack values")]
+    [SerializeField]
+    private float squirrelDamage = 1f;
+    
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
@@ -36,6 +36,8 @@ public class SquirrelBehavior : MonoBehaviour
 
     void Update()
     {
+        animator.SetBool("Run", !inFlight);
+        animator.SetBool("Attack", inFlight);
         if (Vector3.Distance(targetTransform.position, transform.position) >= stoppingDistance && !inFlight) {
             if( rb.velocity != Vector3.zero) { rb.velocity = Vector3.zero; }
             navMeshAgent.enabled = true;
@@ -48,16 +50,31 @@ public class SquirrelBehavior : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other) {
-        Debug.Log("Hit: " + other.gameObject.tag);
-        switch (other.gameObject.tag)
+        Transform otherRoot = other.transform.root;
+        switch (otherRoot.tag)
         {
             case "Ground":
-                navMeshAgent.enabled = true;
-                inFlight = false;
+                Reset();
+            break;
+            case "Player":
+                Debug.Log(name + " has hit the player!");
+                otherRoot.GetComponent<PlayerHealth>().ChangeCurrentHP(squirrelDamage);
+                gameObject.SetActive(false);
             break;
             default:
             break;
         }
+    }
+
+    private void OnDisable()
+    {
+        Reset();
+    }
+
+    private void Reset()
+    {
+        navMeshAgent.enabled = true;
+        inFlight = false;
     }
 
     private void ApplyGravity()
