@@ -58,7 +58,7 @@ public class SquirrelBehavior : MonoBehaviour
             break;
             case "Player":
                 Debug.Log(name + " has hit the player!");
-                otherRoot.GetComponent<PlayerHealth>().ChangeCurrentHP(squirrelDamage);
+                otherRoot.GetComponent<PlayerHealth>().ChangeCurrentHP(-squirrelDamage);
                 gameObject.SetActive(false);
             break;
             default:
