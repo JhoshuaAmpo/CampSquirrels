@@ -30,10 +30,13 @@ public class SquirrelBehavior : MonoBehaviour
 
     bool isAttacking = false;
 
+    private Rigidbody rb;
+
     private void Awake() {
         // targetTransform = GameObject.FindWithTag("Player").transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
         characterController = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -50,16 +53,31 @@ public class SquirrelBehavior : MonoBehaviour
         }
     }
 
+    // private void Leap()
+    // {
+    //     // squirrelVelocity.y -= gravityValue;
+    //     Debug.Log("SquirrelVelocity" + squirrelVelocity);
+    //     // characterController.Move(squirrelVelocity * Time.deltaTime);
+    //     // if(characterController.isGrounded) {
+    //     //     navMeshAgent.enabled = true;
+    //     //     squirrelVelocity = initialSquirrelVelocity;
+    //     // }
+    //     rb.AddForce(squirrelVelocity * Time.deltaTime, ForceMode.Force);
+    //     // leapTimer += Time.deltaTime;
+    //     navMeshAgent.enabled = characterController.isGrounded;
+    // }
+
     private void Leap()
     {
-        squirrelVelocity.y -= gravityValue;
+        // squirrelVelocity.y -= gravityValue;
         Debug.Log("SquirrelVelocity" + squirrelVelocity);
-        characterController.Move(squirrelVelocity * Time.deltaTime);
+        // characterController.Move(squirrelVelocity * Time.deltaTime);
         // if(characterController.isGrounded) {
         //     navMeshAgent.enabled = true;
         //     squirrelVelocity = initialSquirrelVelocity;
         // }
-        leapTimer += Time.deltaTime;
+        rb.AddForce(squirrelVelocity * Time.deltaTime, ForceMode.Force);
+        // leapTimer += Time.deltaTime;
         navMeshAgent.enabled = characterController.isGrounded;
     }
 }

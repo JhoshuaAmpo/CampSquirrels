@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 182903601}
   - component: {fileID: 182903604}
   - component: {fileID: 182903602}
+  - component: {fileID: 182903605}
   m_Layer: 0
   m_Name: Squirrel
   m_TagString: Untagged
@@ -343,7 +344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDelay: 0
   targetTransform: {fileID: 78908833}
-  leapForce: {x: 1, y: 0.01}
+  leapForce: {x: 5, y: 1}
   moveSpeed: 4.5
 --- !u!143 &182903604
 CharacterController:
@@ -371,6 +372,33 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!54 &182903605
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182903599}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &223364186
 GameObject:
   m_ObjectHideFlags: 0
