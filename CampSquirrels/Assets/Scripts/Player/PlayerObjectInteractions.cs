@@ -16,7 +16,7 @@ public class PlayerObjectInteractions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         // DisplayInteraction(); 
-        Debug.Log(other.name + "has entered my box");
+        // Debug.Log(other.name + "has entered my box");
         ProcessInteraction(other);
     }
 
@@ -50,8 +50,8 @@ public class PlayerObjectInteractions : MonoBehaviour
                 break;
             }
         }
-        if (other.TryGetComponent<CampfireController>(out var campfireController)) {
-            DepositWood(campfireController);
+        else if (other.TryGetComponent<CampfireController>(out var campfireController)) {
+            DepositAllWood(campfireController);
         }
     }
 
@@ -61,10 +61,10 @@ public class PlayerObjectInteractions : MonoBehaviour
         OnChangeOfFuelCount.Invoke(FuelCount);
         // Debug.Log("Picked up wood");
     }
-    private void DepositWood(CampfireController cfc) {
+    private void DepositAllWood(CampfireController cfc) {
         if (FuelCount <= 0) { return; }
-        cfc.IncreaseRemainingFuel(1);
-        FuelCount--;
+        cfc.IncreaseRemainingFuel(FuelCount);
+        FuelCount = 0;
         OnChangeOfFuelCount.Invoke(FuelCount);
         // Debug.Log("Depositied wood");
     }
