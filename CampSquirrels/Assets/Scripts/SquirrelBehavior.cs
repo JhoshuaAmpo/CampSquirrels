@@ -1,83 +1,77 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.WSA;
 
 public class SquirrelBehavior : MonoBehaviour
 {
     [SerializeField]
     [Min(0f)]
     private float attackDelay;
-
     [SerializeField]
     private Transform targetTransform;
-
     [SerializeField]
     [Tooltip("X = X & Z, Y = Y")]
     private Vector2 leapForce = Vector2.one;
     [SerializeField]
     private float moveSpeed;
+    [SerializeField]
+    private float gravityValue = 9.81f;
+
     private NavMeshAgent navMeshAgent;
-    private CharacterController characterController;
-    private Vector3 squirrelVelocity;
-    private Vector3 initialSquirrelVelocity;
-    private bool groundedPlayer;
-    private float gravityValue = -9.81f;
-    private float leapTimer = 0f;
-
-    bool isAttacking = false;
-
+    private Animator animator;
     private Rigidbody rb;
+    private bool inFlight = false;
+    private float stoppingDistance;
+    
 
     private void Awake() {
         // targetTransform = GameObject.FindWithTag("Player").transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
-        characterController = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
+        stoppingDistance = navMeshAgent.stoppingDistance;
     }
 
     void Update()
     {
-        navMeshAgent.enabled = Vector3.Distance(targetTransform.position, transform.position) >= navMeshAgent.stoppingDistance;
-        if(navMeshAgent.enabled) {
+        if (Vector3.Distance(targetTransform.position, transform.position) >= stoppingDistance && !inFlight) {
+            if( rb.velocity != Vector3.zero) { rb.velocity = Vector3.zero; }
+            navMeshAgent.enabled = true;
             navMeshAgent.destination = targetTransform.position;
-            Vector3 initDir = (transform.forward + transform.up).normalized;
-            initialSquirrelVelocity = new(initDir.x * leapForce.x, initDir.y * leapForce.y, initDir.z * leapForce.x);
-            squirrelVelocity = initialSquirrelVelocity;
-            leapTimer = 0;
-        } else {
+        } else if (!inFlight) {
             Leap();
+        } else if (inFlight) {
+            ApplyGravity();
+        } 
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        Debug.Log("Hit: " + other.gameObject.tag);
+        switch (other.gameObject.tag)
+        {
+            case "Ground":
+                navMeshAgent.enabled = true;
+                inFlight = false;
+            break;
+            default:
+            break;
         }
     }
 
-    // private void Leap()
-    // {
-    //     // squirrelVelocity.y -= gravityValue;
-    //     Debug.Log("SquirrelVelocity" + squirrelVelocity);
-    //     // characterController.Move(squirrelVelocity * Time.deltaTime);
-    //     // if(characterController.isGrounded) {
-    //     //     navMeshAgent.enabled = true;
-    //     //     squirrelVelocity = initialSquirrelVelocity;
-    //     // }
-    //     rb.AddForce(squirrelVelocity * Time.deltaTime, ForceMode.Force);
-    //     // leapTimer += Time.deltaTime;
-    //     navMeshAgent.enabled = characterController.isGrounded;
-    // }
+    private void ApplyGravity()
+    {
+        rb.AddForce(gravityValue * Time.deltaTime * Vector3.down,ForceMode.Force);
+    }
 
     private void Leap()
     {
-        // squirrelVelocity.y -= gravityValue;
-        Debug.Log("SquirrelVelocity" + squirrelVelocity);
-        // characterController.Move(squirrelVelocity * Time.deltaTime);
-        // if(characterController.isGrounded) {
-        //     navMeshAgent.enabled = true;
-        //     squirrelVelocity = initialSquirrelVelocity;
-        // }
-        rb.AddForce(squirrelVelocity * Time.deltaTime, ForceMode.Force);
-        // leapTimer += Time.deltaTime;
-        navMeshAgent.enabled = characterController.isGrounded;
+        navMeshAgent.enabled = false;
+        transform.LookAt(new Vector3(targetTransform.position.x, transform.position.y, targetTransform.position.z));
+        Vector3 leapVelocity = transform.forward + transform.up.normalized;
+        leapVelocity = new(leapVelocity.x * leapForce.x, leapVelocity.y * leapForce.y, leapVelocity.z * leapForce.x);
+        rb.AddForce(leapVelocity, ForceMode.Impulse);
+        inFlight = true;
     }
 }
