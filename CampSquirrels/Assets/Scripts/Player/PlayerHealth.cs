@@ -13,12 +13,18 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     [Tooltip("Health gain per second insdie the fire")]
     private float warmthRegen;
+    [SerializeField]
+    private AudioClip squirrelDamageSFX;
+    
     public bool InCampfireRange { get; set; } = true;
+    
     private float currentHP;
     public event Action<float, float> OnHealthChange;
+    private AudioSource audioSource;
 
     private void Awake() {
         currentHP = maxHP;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update() {
@@ -32,6 +38,10 @@ public class PlayerHealth : MonoBehaviour
 
     public void ChangeCurrentHP(float delta){
         currentHP += delta;
+        if(delta < -coldDamage) {
+            if(audioSource.isPlaying) {audioSource.Stop();}
+            audioSource.PlayOneShot(squirrelDamageSFX);
+        }
         Mathf.Clamp(currentHP, 0, maxHP);
         OnHealthChange?.Invoke(currentHP, maxHP);
         if (currentHP < 0){

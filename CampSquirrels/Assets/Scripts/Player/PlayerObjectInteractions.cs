@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -8,9 +9,15 @@ public class PlayerObjectInteractions : MonoBehaviour
 {
     [SerializeField]
     private float slapCooldown;
+    [SerializeField]
+    private AudioClip AddLogSFX;
+    [SerializeField]
+    private AudioClip DropLogSFX;
+
     public event Action<int> OnChangeOfFuelCount;
     public int FuelCount {get; private set;} = 0;
     
+    AudioSource audioSource;
     PlayerActions playerActions;
     List<GameObject> squirrelsInStrikeRange;
     private float slapTimer = 0;
@@ -20,6 +27,7 @@ public class PlayerObjectInteractions : MonoBehaviour
         playerActions.Interact.Enable();
         playerActions.Interact.TorchSlap.performed += ProcessAttack;
         squirrelsInStrikeRange = new();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update() {
@@ -74,7 +82,7 @@ public class PlayerObjectInteractions : MonoBehaviour
             }
         }
         else if (other.TryGetComponent<CampfireController>(out var campfireController) && Vector3.Distance(other.transform.position, this.transform.position) < 5f) {
-            DepositAllWood(campfireController);
+            DepositWood(campfireController);
         }
     }
 
@@ -83,10 +91,14 @@ public class PlayerObjectInteractions : MonoBehaviour
         if (slapTimer <= 0f) { return; }
         slapTimer = slapCooldown;
         // Play slap animation
-        if(squirrelsInStrikeRange.Count <= 0) { return;}
+        if(squirrelsInStrikeRange.Count <= 0) { 
+            // PlaySFX(/*WhooshSFX*/);
+            return;
+        }
         foreach(var squirrel in squirrelsInStrikeRange) {
             squirrel.SetActive(false);
         }
+        // PlaySFX(/*SlapSFX*/);
         // Debug.Log("Slapped " + squirrelsInStrikeRange.Count + " squirrels!");
         squirrelsInStrikeRange.Clear();
     }
@@ -95,13 +107,28 @@ public class PlayerObjectInteractions : MonoBehaviour
         FuelCount++;
         other.gameObject.SetActive(false);
         OnChangeOfFuelCount.Invoke(FuelCount);
-        // Debug.Log("Picked up wood");
+        PlaySFX(AddLogSFX);
     }
-    private void DepositAllWood(CampfireController cfc) {
+
+    private void DepositWood(CampfireController cfc) {
         if (FuelCount <= 0) { return; }
+        StartCoroutine(ProcessDepositWoodSFX());
         cfc.IncreaseRemainingFuel(FuelCount);
         FuelCount = 0;
         OnChangeOfFuelCount.Invoke(FuelCount);
-        // Debug.Log("Depositied wood");
+    }
+
+    private IEnumerator ProcessDepositWoodSFX()
+    {
+        int max = FuelCount;
+        for(int i = 0; i < max; i++) {
+            PlaySFX(DropLogSFX);
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    private void PlaySFX(AudioClip ac) {
+        if(audioSource.isPlaying) {audioSource.Stop();}
+        audioSource.PlayOneShot(ac);
     }
 }
