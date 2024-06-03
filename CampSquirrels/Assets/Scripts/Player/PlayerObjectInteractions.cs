@@ -8,15 +8,23 @@ public class PlayerObjectInteractions : MonoBehaviour
 {
     public event Action<int> OnChangeOfFuelCount;
     public int FuelCount {get; private set;} = 0;
+    
     PlayerActions playerActions;
+    List<GameObject> squirrelsInStrikeRange;
     private void Awake() {
         playerActions = new();
         playerActions.Interact.Enable();
+        playerActions.Interact.TorchSlap.performed += ProcessAttack;
+        squirrelsInStrikeRange = new();
     }
 
     private void OnTriggerEnter(Collider other) {
         // DisplayInteraction(); 
         // Debug.Log(other.name + "has entered my box");
+        if (other.gameObject.CompareTag("Squirrel")) {
+            squirrelsInStrikeRange.Add(other.gameObject);
+            Debug.Log("Squirrel entered my box!");
+        }
         ProcessInteraction(other);
     }
 
@@ -24,6 +32,13 @@ public class PlayerObjectInteractions : MonoBehaviour
         // DisplayInteraction();
         // Debug.Log(other.name);
         ProcessInteraction(other);
+    }
+
+    private void OnTriggerExit(Collider other) {
+        if (other.gameObject.CompareTag("Squirrel")) {
+            squirrelsInStrikeRange.Remove(other.gameObject);
+            Debug.Log("Squirrel exited my box!");
+        }
     }
 
     private void DisplayInteraction() {
@@ -53,6 +68,17 @@ public class PlayerObjectInteractions : MonoBehaviour
         else if (other.TryGetComponent<CampfireController>(out var campfireController)) {
             DepositAllWood(campfireController);
         }
+    }
+
+    private void ProcessAttack(InputAction.CallbackContext context)
+    {
+        // Play slap animation
+        if(squirrelsInStrikeRange.Count <= 0) { return;}
+        foreach(var squirrel in squirrelsInStrikeRange) {
+            squirrel.SetActive(false);
+        }
+        Debug.Log("Slapped " + squirrelsInStrikeRange.Count + " squirrels!");
+        squirrelsInStrikeRange.Clear();
     }
 
     private void PickUpWood(Collider other) {

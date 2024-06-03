@@ -81,6 +81,39 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""Alt"",
+                    ""id"": ""59861e3d-dfd3-4440-9846-330931b54265"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""6d101b12-f6e3-477b-8460-e886dfbd26d1"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""d0f962e6-0011-46ce-8fcb-179f257d60d2"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": ""Right"",
                     ""id"": ""b5b66345-9bf5-461b-9ff6-b22311abefb5"",
                     ""path"": ""1DAxis"",
@@ -112,6 +145,39 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""action"": ""Strafe"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Alt"",
+                    ""id"": ""ee83a20d-06b9-4c80-b926-c80dd873125f"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Strafe"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""6ca61dc8-94d5-4e40-b73a-5e2ffddd4ae0"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Strafe"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""a26157bf-62ac-410c-bd54-6a1fd7b764c6"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Strafe"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -127,17 +193,59 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TorchSlap"",
+                    ""type"": ""Button"",
+                    ""id"": ""2932c9fb-76cc-4e44-b486-9ff4ba38fe31"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""68c26f4a-d885-4bd1-aa29-d2c2d610fd02"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PickUpItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fcc1ccb5-a965-443c-aadc-dec46094b24e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickUpItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b0124d41-c89f-485e-b1a3-22432a81c47f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TorchSlap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ac078db-a136-4bb4-8d10-dbe256fcd2d0"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TorchSlap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -153,6 +261,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         // Interact
         m_Interact = asset.FindActionMap("Interact", throwIfNotFound: true);
         m_Interact_PickUpItem = m_Interact.FindAction("PickUpItem", throwIfNotFound: true);
+        m_Interact_TorchSlap = m_Interact.FindAction("TorchSlap", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -269,11 +378,13 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Interact;
     private List<IInteractActions> m_InteractActionsCallbackInterfaces = new List<IInteractActions>();
     private readonly InputAction m_Interact_PickUpItem;
+    private readonly InputAction m_Interact_TorchSlap;
     public struct InteractActions
     {
         private @PlayerActions m_Wrapper;
         public InteractActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @PickUpItem => m_Wrapper.m_Interact_PickUpItem;
+        public InputAction @TorchSlap => m_Wrapper.m_Interact_TorchSlap;
         public InputActionMap Get() { return m_Wrapper.m_Interact; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -286,6 +397,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @PickUpItem.started += instance.OnPickUpItem;
             @PickUpItem.performed += instance.OnPickUpItem;
             @PickUpItem.canceled += instance.OnPickUpItem;
+            @TorchSlap.started += instance.OnTorchSlap;
+            @TorchSlap.performed += instance.OnTorchSlap;
+            @TorchSlap.canceled += instance.OnTorchSlap;
         }
 
         private void UnregisterCallbacks(IInteractActions instance)
@@ -293,6 +407,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @PickUpItem.started -= instance.OnPickUpItem;
             @PickUpItem.performed -= instance.OnPickUpItem;
             @PickUpItem.canceled -= instance.OnPickUpItem;
+            @TorchSlap.started -= instance.OnTorchSlap;
+            @TorchSlap.performed -= instance.OnTorchSlap;
+            @TorchSlap.canceled -= instance.OnTorchSlap;
         }
 
         public void RemoveCallbacks(IInteractActions instance)
@@ -318,5 +435,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     public interface IInteractActions
     {
         void OnPickUpItem(InputAction.CallbackContext context);
+        void OnTorchSlap(InputAction.CallbackContext context);
     }
 }
