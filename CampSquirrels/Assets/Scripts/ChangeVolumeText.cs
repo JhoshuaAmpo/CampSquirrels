@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,22 +8,22 @@ using UnityEngine.UI;
 public class ChangeVolumeText : MonoBehaviour
 {   
     [SerializeField]
-    AudioType audioType;
-    public enum AudioType { SFX, Ambience, Music}
+    AudioController.AudioType audioType;
     Slider slider;
     TextMeshProUGUI textMeshProUGUI;
+
 
     private void Awake() {
         textMeshProUGUI = GetComponent<TextMeshProUGUI>();
         slider = transform.parent.GetComponentInChildren<Slider>();
         switch (audioType) {
-            case AudioType.SFX:
+            case AudioController.AudioType.SFX:
                 slider.value = PlayerPrefs.GetFloat("SFXVolume");
             break;
-            case AudioType.Ambience:
+            case AudioController.AudioType.Ambience:
                 slider.value = PlayerPrefs.GetFloat("AmbienceVolume");
             break;
-            case AudioType.Music:
+            case AudioController.AudioType.Music:
                 slider.value = PlayerPrefs.GetFloat("MusicVolume");
             break;
         }
@@ -35,13 +36,13 @@ public class ChangeVolumeText : MonoBehaviour
     public void ChangeText(float f){
         string key = "";
         switch (audioType) {
-            case AudioType.SFX:
+            case AudioController.AudioType.SFX:
                 key = "SFXVolume";
             break;
-            case AudioType.Ambience:
+            case AudioController.AudioType.Ambience:
                 key = "AmbienceVolume";
             break;
-            case AudioType.Music:
+            case AudioController.AudioType.Music:
                 key = "MusicVolume";
             break;
             default:

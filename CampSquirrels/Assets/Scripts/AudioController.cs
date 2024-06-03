@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
-    List<AudioSource> musicSources;
-    List<AudioSource> sfxSources;
-    List<AudioSource> ambienceSources;
+    public List<AudioSource> sfxSources;
+    public List<AudioSource> ambienceSources;
+    public List<AudioSource> musicSources;
+    public enum AudioType { SFX, Ambience, Music}
 
-    private void Awake() {
-        musicSources = new();
-        sfxSources = new();
-        ambienceSources = new();
+    private void Update() {
+        UpdateAllAudioSources();
+    }
 
-        
+    private void UpdateAllAudioSources() {
+        foreach (AudioSource source in sfxSources) {
+            source.volume = PlayerPrefs.GetFloat("SFXVolume");
+        }
+        foreach (AudioSource source in ambienceSources) {
+            source.volume = PlayerPrefs.GetFloat("AmbienceVolume");
+        }
+        foreach (AudioSource source in musicSources) {
+            source.volume = PlayerPrefs.GetFloat("MusicVolume");
+        }
     }
 }

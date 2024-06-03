@@ -1523,6 +1523,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32c8db27e5f3ff14abf499c6abc777ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sfxSources: []
+  ambienceSources: []
+  musicSources:
+  - {fileID: 1518222735}
 --- !u!1 &1637154974
 GameObject:
   m_ObjectHideFlags: 0
