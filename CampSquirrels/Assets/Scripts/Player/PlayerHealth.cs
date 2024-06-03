@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
     private float currentHP;
     public event Action<float, float> OnHealthChange;
     private AudioSource audioSource;
+    private Animator animator;
 
     private void Awake() {
         currentHP = maxHP;
@@ -58,6 +59,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
     private void ProcessDeath() {
+        animator.SetBool("Death", true);
         // Debug.Log("Player has died!");
     }
 }

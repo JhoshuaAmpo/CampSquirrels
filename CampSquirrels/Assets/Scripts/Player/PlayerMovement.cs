@@ -11,11 +11,13 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed = 0;
     PlayerActions playerActions;
     CharacterController characterController;
+    Animator animator;
 
     void Awake() {
         playerActions = new();
         playerActions.Movement.Enable();
         characterController = GetComponent<CharacterController>();
+        animator = transform.root.GetComponentInChildren<Animator>();
     }
 
     private void OnEnable() {
@@ -27,12 +29,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Update() {
+        
         Move();
     }
 
     private void Move(){
         int forwardDir = (int)playerActions.Movement.Forward.ReadValue<float>();
         int sideDir = (int)playerActions.Movement.Strafe.ReadValue<float>();
+        bool animRun = true;
         Vector3 moveVelocity = Vector3.zero;
         if (forwardDir != 0 && sideDir != 0) {
             Vector3 moveDir = forwardDir * transform.forward + sideDir * transform.right;
@@ -46,6 +50,10 @@ public class PlayerMovement : MonoBehaviour
         else if (sideDir != 0) {
             moveVelocity = sideDir * moveSpeed  * transform.right;
         }
+        else {
+            animRun = false;
+        }
+        animator.SetBool("Run", animRun);
         characterController.SimpleMove(moveVelocity);
     }
 }

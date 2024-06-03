@@ -19,20 +19,25 @@ public class PlayerObjectInteractions : MonoBehaviour
     
     AudioSource audioSource;
     PlayerActions playerActions;
+    Animator animator;
     List<GameObject> squirrelsInStrikeRange;
     private float slapTimer = 0;
 
     private void Awake() {
         playerActions = new();
         playerActions.Interact.Enable();
-        playerActions.Interact.TorchSlap.performed += ProcessAttack;
         squirrelsInStrikeRange = new();
         audioSource = GetComponent<AudioSource>();
+        animator = transform.root.GetComponentInChildren<Animator>();
     }
 
     private void Update() {
         slapTimer -= Time.deltaTime;
         Mathf.Clamp(slapTimer, 0f, slapCooldown);
+        if(playerActions.Interact.TorchSlap.IsPressed())
+        {
+            ProcessAttack();
+        }
     }
     private void OnTriggerEnter(Collider other) {
         // DisplayInteraction(); 
@@ -86,11 +91,14 @@ public class PlayerObjectInteractions : MonoBehaviour
         }
     }
 
-    private void ProcessAttack(InputAction.CallbackContext context)
+    private void ProcessAttack()
     {
-        if (slapTimer <= 0f) { return; }
+        animator.SetBool("Slap", playerActions.Interact.TorchSlap.IsPressed() && slapTimer <= 0f);
+        if (slapTimer > 0f) { 
+            return; 
+        }
+        Debug.Log("Slap");
         slapTimer = slapCooldown;
-        // Play slap animation
         if(squirrelsInStrikeRange.Count <= 0) { 
             // PlaySFX(/*WhooshSFX*/);
             return;
@@ -99,7 +107,7 @@ public class PlayerObjectInteractions : MonoBehaviour
             squirrel.SetActive(false);
         }
         // PlaySFX(/*SlapSFX*/);
-        // Debug.Log("Slapped " + squirrelsInStrikeRange.Count + " squirrels!");
+        Debug.Log("Slapped " + squirrelsInStrikeRange.Count + " squirrels!");
         squirrelsInStrikeRange.Clear();
     }
 
