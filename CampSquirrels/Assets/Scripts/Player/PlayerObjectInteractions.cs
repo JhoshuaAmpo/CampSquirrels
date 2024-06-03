@@ -6,11 +6,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerObjectInteractions : MonoBehaviour
 {
+    [SerializeField]
+    private float slapCooldown;
     public event Action<int> OnChangeOfFuelCount;
     public int FuelCount {get; private set;} = 0;
     
     PlayerActions playerActions;
     List<GameObject> squirrelsInStrikeRange;
+    private float slapTimer = 0;
+
     private void Awake() {
         playerActions = new();
         playerActions.Interact.Enable();
@@ -18,6 +22,10 @@ public class PlayerObjectInteractions : MonoBehaviour
         squirrelsInStrikeRange = new();
     }
 
+    private void Update() {
+        slapTimer -= Time.deltaTime;
+        Mathf.Clamp(slapTimer, 0f, slapCooldown);
+    }
     private void OnTriggerEnter(Collider other) {
         // DisplayInteraction(); 
         // Debug.Log(other.name + "has entered my box");
@@ -72,12 +80,14 @@ public class PlayerObjectInteractions : MonoBehaviour
 
     private void ProcessAttack(InputAction.CallbackContext context)
     {
+        if (slapTimer <= 0f) { return; }
+        slapTimer = slapCooldown;
         // Play slap animation
         if(squirrelsInStrikeRange.Count <= 0) { return;}
         foreach(var squirrel in squirrelsInStrikeRange) {
             squirrel.SetActive(false);
         }
-        Debug.Log("Slapped " + squirrelsInStrikeRange.Count + " squirrels!");
+        // Debug.Log("Slapped " + squirrelsInStrikeRange.Count + " squirrels!");
         squirrelsInStrikeRange.Clear();
     }
 
