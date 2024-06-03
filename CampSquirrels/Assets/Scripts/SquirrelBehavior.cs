@@ -17,11 +17,14 @@ public class SquirrelBehavior : MonoBehaviour
     [Header("Attack values")]
     [SerializeField]
     private float squirrelDamage = 1f;
+    [SerializeField]
+    private AudioClip attackSFX;
     
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
     private Rigidbody rb;
+    private AudioSource audioSource;
     private bool inFlight = false;
     private float stoppingDistance;
     
@@ -31,6 +34,7 @@ public class SquirrelBehavior : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
+        audioSource = GetComponent<AudioSource>();
         stoppingDistance = navMeshAgent.stoppingDistance;
     }
 
@@ -84,11 +88,17 @@ public class SquirrelBehavior : MonoBehaviour
 
     private void Leap()
     {
+        PlaySFX(attackSFX);
         navMeshAgent.enabled = false;
         transform.LookAt(new Vector3(targetTransform.position.x, transform.position.y, targetTransform.position.z));
         Vector3 leapVelocity = transform.forward + transform.up.normalized;
         leapVelocity = new(leapVelocity.x * leapForce.x, leapVelocity.y * leapForce.y, leapVelocity.z * leapForce.x);
         rb.AddForce(leapVelocity, ForceMode.Impulse);
         inFlight = true;
+    }
+
+    private void PlaySFX(AudioClip ac) {
+        if(audioSource.isPlaying) {audioSource.Stop();}
+        audioSource.PlayOneShot(ac);
     }
 }
