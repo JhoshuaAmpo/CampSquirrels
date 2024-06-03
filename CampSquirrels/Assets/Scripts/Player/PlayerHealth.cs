@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
         if (!InCampfireRange) {
             // Debug.Log("Ouch taking cold damage!");
             ChangeCurrentHP(-coldDamage * Time.deltaTime);
-        } else {
+        } else if(currentHP < maxHP) {
             ChangeCurrentHP(warmthRegen * Time.deltaTime);
         }
     }

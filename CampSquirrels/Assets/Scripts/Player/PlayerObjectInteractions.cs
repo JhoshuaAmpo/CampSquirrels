@@ -73,7 +73,7 @@ public class PlayerObjectInteractions : MonoBehaviour
                 break;
             }
         }
-        else if (other.TryGetComponent<CampfireController>(out var campfireController)) {
+        else if (other.TryGetComponent<CampfireController>(out var campfireController) && Vector3.Distance(other.transform.position, this.transform.position) < 5f) {
             DepositAllWood(campfireController);
         }
     }
