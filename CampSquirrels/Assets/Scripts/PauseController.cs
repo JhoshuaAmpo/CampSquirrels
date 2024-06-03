@@ -21,8 +21,7 @@ public class PauseController : MonoBehaviour
 
     private void ProcessPause(InputAction.CallbackContext context)
     {
-        isPaused = !isPaused;
-        if (isPaused) {
+        if (!isPaused) {
             Pause();
         } else {
             Resume();
@@ -32,16 +31,20 @@ public class PauseController : MonoBehaviour
 
     public void Pause()
     {
+        Cursor.visible = true;
         prevTimeScale = Time.timeScale;
         Time.timeScale = 0;
         AudioListener.pause = true;
         pauseMenuOverlay.SetActive(true);
+        isPaused = true;
     }
 
     public void Resume()
     {
+        Cursor.visible = false;
         Time.timeScale = prevTimeScale;
         AudioListener.pause = false;
         pauseMenuOverlay.SetActive(false);
+        isPaused = false;
     }
 }
