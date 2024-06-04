@@ -32,6 +32,7 @@ public class PlayerHealth : MonoBehaviour
     private void Awake() {
         currentHP = maxHP;
         audioSource = GetComponent<AudioSource>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Update() {

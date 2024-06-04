@@ -18,6 +18,8 @@ public class SquirrelBehavior : MonoBehaviour
     private float squirrelDamage = 1f;
     [SerializeField]
     private AudioClip attackSFX;
+    [SerializeField]
+    private AudioClip deathSFX;
     
 
     private NavMeshAgent navMeshAgent;

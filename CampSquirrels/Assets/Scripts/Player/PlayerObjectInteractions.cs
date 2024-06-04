@@ -13,6 +13,10 @@ public class PlayerObjectInteractions : MonoBehaviour
     private AudioClip AddLogSFX;
     [SerializeField]
     private AudioClip DropLogSFX;
+    [SerializeField]
+    private AudioClip SlapSFX;
+    [SerializeField]
+    private AudioClip squirrelDeathSFX;
 
     public event Action<int> OnChangeOfFuelCount;
     public int FuelCount {get; private set;} = 0;
@@ -34,7 +38,7 @@ public class PlayerObjectInteractions : MonoBehaviour
     private void Update() {
         slapTimer -= Time.deltaTime;
         Mathf.Clamp(slapTimer, 0f, slapCooldown);
-        animator.SetBool("Slap", playerActions.Interact.TorchSlap.IsPressed());
+        animator.SetBool("Slap", playerActions.Interact.TorchSlap.IsPressed() && slapTimer <= 0f);
         if(playerActions.Interact.TorchSlap.IsPressed())
         {
             ProcessAttack();
@@ -100,14 +104,15 @@ public class PlayerObjectInteractions : MonoBehaviour
         
         // Debug.Log("Slap");
         slapTimer = slapCooldown;
+        PlaySFX(SlapSFX);
         if(squirrelsInStrikeRange.Count <= 0) { 
             // PlaySFX(/*WhooshSFX*/);
             return;
         }
         foreach(var squirrel in squirrelsInStrikeRange) {
+            PlaySFX(squirrelDeathSFX);
             squirrel.SetActive(false);
         }
-        // PlaySFX(/*SlapSFX*/);
         // Debug.Log("Slapped " + squirrelsInStrikeRange.Count + " squirrels!");
         squirrelsInStrikeRange.Clear();
     }
