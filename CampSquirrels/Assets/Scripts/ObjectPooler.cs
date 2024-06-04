@@ -11,6 +11,8 @@ public class ObjectPooler : MonoBehaviour
 
     [SerializeField]
     bool doesObjectMove = false;
+    [SerializeField]
+    float initialSpawnCount = 0;
 
     [SerializeField]
     int numberOfObjects;
@@ -48,7 +50,7 @@ public class ObjectPooler : MonoBehaviour
         }
 
         // Spawn an item at each position
-        for(int i = 0; i < spawnPoints.Count; i++) {
+        for(int i = 0; i < initialSpawnCount; i++) {
             int ind = Spawn(spawnPoints[i].transform.position);
             spawnPointsTaken.Add(new(objectPool[ind], true));
         }
