@@ -34,6 +34,7 @@ public class PlayerObjectInteractions : MonoBehaviour
     private void Update() {
         slapTimer -= Time.deltaTime;
         Mathf.Clamp(slapTimer, 0f, slapCooldown);
+        animator.SetBool("Slap", playerActions.Interact.TorchSlap.IsPressed());
         if(playerActions.Interact.TorchSlap.IsPressed())
         {
             ProcessAttack();
@@ -93,10 +94,10 @@ public class PlayerObjectInteractions : MonoBehaviour
 
     private void ProcessAttack()
     {
-        animator.SetBool("Slap", playerActions.Interact.TorchSlap.IsPressed() && slapTimer <= 0f);
         if (slapTimer > 0f) { 
             return; 
         }
+        
         Debug.Log("Slap");
         slapTimer = slapCooldown;
         if(squirrelsInStrikeRange.Count <= 0) { 
