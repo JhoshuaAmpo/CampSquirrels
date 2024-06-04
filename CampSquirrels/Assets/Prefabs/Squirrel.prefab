@@ -1233,11 +1233,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb4a11981189b246b560d5af1650aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransform: {fileID: 0}
   leapForce: {x: 5, y: 2}
+  targetTransform: {fileID: 0}
   gravityValue: 40
-  squirrelDamage: 1
+  squirrelDamage: 3
   attackSFX: {fileID: 8300000, guid: 36e4822eb3be4104e94351addfb9b1e7, type: 3}
+  deathSFX: {fileID: 8300000, guid: 315ddc6108916e44a91e6e8ae5ab67aa, type: 3}
 --- !u!135 &8381363102406036790
 SphereCollider:
   m_ObjectHideFlags: 0

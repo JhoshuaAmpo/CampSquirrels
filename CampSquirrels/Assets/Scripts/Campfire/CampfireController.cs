@@ -17,7 +17,6 @@ public class CampfireController : MonoBehaviour
     // Timer for burning 1 fuel
     private float burnTimer;
     private ParticleSystem fireParticles;
-    enum Type {}
     GameObject player;
     PlayerHealth playerHealth;
 
@@ -38,7 +37,11 @@ public class CampfireController : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         // Debug.Log(other.name + " has entered the campfire");
         if (other.CompareTag("Player")) {
-            playerHealth.IsInCampFireRange(true);
+            if(isExtinguished) {
+                playerHealth.IsInCampFireRange(false);
+            } else {
+                playerHealth.IsInCampFireRange(true);
+            }
         }
     }
 
@@ -71,7 +74,8 @@ public class CampfireController : MonoBehaviour
     private void ExtinguishFlame() {
         isExtinguished = true;
         fire.SetActive(false);
-        fireParticles.gameObject.SetActive(false);
+        GetComponentInChildren<Light>().enabled = false;
+        playerHealth.IsInCampFireRange(false);
         // Debug.Log("Fire has gone out!");
     }
 }
