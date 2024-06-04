@@ -18,6 +18,9 @@ public class ObjectPooler : MonoBehaviour
     int numberOfObjects;
 
     [SerializeField]
+    Transform targetTransform;
+
+    [SerializeField]
     [Tooltip("Number of seconds between spawns")]
     float spawnRate = 1f;
 
@@ -40,6 +43,9 @@ public class ObjectPooler : MonoBehaviour
         // Initialize objectPool
         for(int i = 0; i < numberOfObjects; i++) {
             objectPool.Add(Instantiate(objectToPool,transform));
+            if(objectToPool.CompareTag("Squirrel")) {
+                objectPool[i].GetComponent<SquirrelBehavior>().targetTransform = targetTransform;
+            }
             objectPool[i].SetActive(false);
         }
 
@@ -54,12 +60,17 @@ public class ObjectPooler : MonoBehaviour
             int ind = Spawn(spawnPoints[i].transform.position);
             spawnPointsTaken.Add(new(objectPool[ind], true));
         }
+        while (spawnPointsTaken.Count < spawnPoints.Count) {
+            spawnPointsTaken.Add(new(null, false));
+        }
+
         spawnTimer = spawnRate;
     }
 
     private void Update() {
         spawnTimer -= Time.deltaTime;
         UpdateSpotTaken();
+        if (spawnTimer > 0f) { return;}
         if (doesObjectMove) {
             ProcessMoversSpawn();
         } else {
@@ -68,12 +79,10 @@ public class ObjectPooler : MonoBehaviour
     }
     
     private void ProcessMoversSpawn() {
-        if (spawnTimer > 0f) { return;}
         Spawn(spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)].position);
     }
 
     private void ProcessStationarySpawn() {
-        if (spawnTimer > 0f) { return;}
         int spawnIndex = UnityEngine.Random.Range(0, spawnPoints.Count);
         int originalSI = spawnIndex;
         while(spawnPointsTaken[spawnIndex].Item2) {

@@ -39,6 +39,16 @@ public class PauseController : MonoBehaviour
         isPaused = true;
     }
 
+    public void Pause(bool enablePauseOverlay)
+    {
+        Cursor.visible = true;
+        prevTimeScale = Time.timeScale;
+        Time.timeScale = 0;
+        AudioListener.pause = true;
+        pauseMenuOverlay.SetActive(enablePauseOverlay);
+        isPaused = true;
+    }
+
     public void Resume()
     {
         Cursor.visible = false;

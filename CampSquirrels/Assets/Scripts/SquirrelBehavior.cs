@@ -6,12 +6,11 @@ using UnityEngine.AI;
 
 public class SquirrelBehavior : MonoBehaviour
 {
-    [SerializeField]
-    private Transform targetTransform;
     [Header("Leap values")]
     [SerializeField]
     [Tooltip("X = X & Z, Y = Y")]
     private Vector2 leapForce = Vector2.one;
+    public Transform targetTransform;
     [SerializeField]
     private float gravityValue = 9.81f;
     [Header("Attack values")]

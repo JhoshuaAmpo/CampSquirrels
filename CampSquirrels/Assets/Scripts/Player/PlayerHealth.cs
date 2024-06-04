@@ -15,6 +15,12 @@ public class PlayerHealth : MonoBehaviour
     private float warmthRegen;
     [SerializeField]
     private AudioClip squirrelDamageSFX;
+    [SerializeField]
+    private AudioClip deathSound;
+    [SerializeField]
+    private GameObject deathHUD;
+    [SerializeField]
+    private PauseController pauseController;
     
     public bool InCampfireRange { get; set; } = true;
     
@@ -46,7 +52,7 @@ public class PlayerHealth : MonoBehaviour
         Mathf.Clamp(currentHP, 0, maxHP);
         OnHealthChange?.Invoke(currentHP, maxHP);
         if (currentHP < 0){
-            ProcessDeath();
+            StartCoroutine(ProcessDeath());
         }
     }
 
@@ -58,8 +64,13 @@ public class PlayerHealth : MonoBehaviour
         InCampfireRange = b;
     }
 
-    private void ProcessDeath() {
+    private IEnumerator ProcessDeath() {
+        if(audioSource.isPlaying) {audioSource.Stop();}
+        audioSource.PlayOneShot(deathSound);
         animator.SetBool("Death", true);
-        // Debug.Log("Player has died!");
+        yield return new WaitForSeconds(3);
+        pauseController.Pause(false);
+        AudioListener.pause = false;
+        deathHUD.SetActive(true);
     }
 }

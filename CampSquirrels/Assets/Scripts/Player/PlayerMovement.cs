@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
     private float moveSpeed = 0;
+    [SerializeField]
+    private AudioSource footStepNoises;
     PlayerActions playerActions;
     CharacterController characterController;
     Animator animator;
@@ -18,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
         playerActions.Movement.Enable();
         characterController = GetComponent<CharacterController>();
         animator = transform.root.GetComponentInChildren<Animator>();
+        footStepNoises.Pause();
     }
 
     private void OnEnable() {
@@ -29,7 +32,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Update() {
-        
         Move();
     }
 
@@ -53,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
         else {
             animRun = false;
         }
+        footStepNoises.enabled = forwardDir != 0  || sideDir != 0;
         animator.SetBool("Run", animRun);
         characterController.SimpleMove(moveVelocity);
     }

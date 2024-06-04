@@ -98,7 +98,7 @@ public class PlayerObjectInteractions : MonoBehaviour
             return; 
         }
         
-        Debug.Log("Slap");
+        // Debug.Log("Slap");
         slapTimer = slapCooldown;
         if(squirrelsInStrikeRange.Count <= 0) { 
             // PlaySFX(/*WhooshSFX*/);
@@ -108,7 +108,7 @@ public class PlayerObjectInteractions : MonoBehaviour
             squirrel.SetActive(false);
         }
         // PlaySFX(/*SlapSFX*/);
-        Debug.Log("Slapped " + squirrelsInStrikeRange.Count + " squirrels!");
+        // Debug.Log("Slapped " + squirrelsInStrikeRange.Count + " squirrels!");
         squirrelsInStrikeRange.Clear();
     }
 
